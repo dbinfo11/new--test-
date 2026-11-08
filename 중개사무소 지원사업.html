@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="ko">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>중개사무소 지원사업</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@700;800&family=IBM+Plex+Sans+KR:wght@400;500;600&display=swap">
+<style>
+/* Layout: 먼저 확인(업종 코드) → 바로 할 것 → 업종 확인 후 → 직원 채용 시 → 확인 방법·문의처 → 출처. 중개사무소 대표 본인이 보는 메모 */
+:root{
+  --bg:#f5f6f4;--surface:#fff;--ink:#1c2328;--muted:#5b6670;--line:#d9ddd8;
+  --accent:#1f5f7a;--accent-soft:#e3eef2;--warn:#a6560c;--warn-soft:#fbeedd;--ok:#2d6a3e;--ok-soft:#e2f0e5;--wait:#5b5f8a;--wait-soft:#e9e9f4;
+  --f-display:"Gothic A1","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --f-body:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#13181b;--surface:#1b2226;--ink:#e6eaec;--muted:#9aa6ad;--line:#2e383d;
+  --accent:#7cc0dc;--accent-soft:#1d3440;--warn:#f0a95c;--warn-soft:#3a2a17;--ok:#86c999;--ok-soft:#1c3324;--wait:#aeb2e0;--wait-soft:#272a40;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#13181b;--surface:#1b2226;--ink:#e6eaec;--muted:#9aa6ad;--line:#2e383d;
+  --accent:#7cc0dc;--accent-soft:#1d3440;--warn:#f0a95c;--warn-soft:#3a2a17;--ok:#86c999;--ok-soft:#1c3324;--wait:#aeb2e0;--wait-soft:#272a40;color-scheme:dark}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:900px;margin:0 auto;padding-block:28px 56px;display:grid;gap:28px}
+h1,h2,h3{font-family:var(--f-display);margin:0;line-height:1.3;text-wrap:balance}
+h1{font-size:clamp(25px,4.6vw,34px);font-weight:800}
+h2{font-size:20px;font-weight:800}
+h3{font-size:16px;font-weight:700}
+p{margin:0}
+a{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+header{display:grid;gap:10px;padding-bottom:18px;border-bottom:2px solid var(--ink)}
+.eyebrow{font-size:12px;letter-spacing:.08em;color:var(--muted);font-weight:600}
+.lede{color:var(--muted);max-width:66ch}
+section{display:grid;gap:12px}
+.sec-head{display:grid;gap:4px}
+.sec-head p{color:var(--muted);font-size:14px;max-width:70ch}
+.alert{background:var(--warn-soft);border:1px solid var(--warn);border-radius:8px;padding:14px 16px;display:grid;gap:8px}
+.alert h2{color:var(--warn)}
+.alert ul{margin:0;padding-left:18px;display:grid;gap:5px;font-size:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:10px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 16px;display:grid;gap:6px;align-content:start;min-width:0}
+.card.key{border-color:var(--accent);box-shadow:inset 3px 0 0 var(--accent)}
+.top{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.pill{font-size:11.5px;font-weight:600;border-radius:4px;padding:1px 7px;white-space:nowrap}
+.hot{background:var(--warn-soft);color:var(--warn)}
+.okp{background:var(--ok-soft);color:var(--ok)}
+.wait{background:var(--wait-soft);color:var(--wait)}
+.chk{background:var(--accent-soft);color:var(--accent)}
+.big{font-family:var(--f-display);font-weight:700;font-size:16px}
+.card p{font-size:14px}
+.card .how{font-size:13px;color:var(--muted)}
+.card a{font-size:13px;font-weight:600}
+.steps{margin:0;padding-left:20px;display:grid;gap:6px;font-size:14px}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 16px;display:grid;gap:8px}
+.contacts{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px}
+.contacts div{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-size:13.5px;min-width:0}
+.contacts b{display:block;font-family:var(--f-display)}
+.contacts span{user-select:all;font-variant-numeric:tabular-nums}
+details.src{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px 16px}
+details.src summary{cursor:pointer;font-weight:600}
+details.src ul{margin:10px 0 0;padding-left:18px;display:grid;gap:4px;font-size:13px;word-break:break-all}
+footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:14px}
+</style>
+<div class="wrap">
+<header>
+  <div class="eyebrow">부동산 중개사무소 대표용 · 2026.11.07 기준</div>
+  <h1>중개사무소 지원사업</h1>
+  <p class="lede">시설 매입이 아니어도 중개사무소가 신청해 볼 만한 지원을 모았습니다. 부동산업은 지원 대상에서 빠지는 경우가 많아서, 업종과 상관없이 되는 것과 업종 확인이 필요한 것을 나눴습니다.</p>
+</header>
+
+<div class="alert">
+  <h2>먼저 확인: 업종 코드</h2>
+  <ul>
+    <li><b>소상공인 정책자금</b>: 부동산업을 신청 불가 업종으로 안내하는 곳이 있습니다. 반면 2020년 소상공인 지원금 때는 부동산 자문·중개업이 대상에 포함됐다는 보도도 있습니다. 사업자등록증의 업종 코드(중개업인지, 임대·관리·컨설팅인지)에 따라 갈립니다.</li>
+    <li><b>창업중소기업 세액감면</b>: 부동산업은 감면 대상 업종이 아닌 것으로 알려져 있지만, 이번 조사에서 원문으로 확인하지는 못했습니다.</li>
+    <li>대출·보증·세금 감면은 신청 전에 <b>소상공인시장진흥공단(1357)</b>이나 세무사에게 업종 코드로 물어보세요.</li>
+  </ul>
+</div>
+
+<section>
+  <div class="sec-head"><h2>업종과 상관없이 바로 해볼 것</h2><p>사업주 개인이나 소상공인 전체가 대상이라 업종 제한을 덜 받는 것입니다.</p></div>
+  <div class="grid">
+    <article class="card key"><div class="top"><span class="pill okp">예산 소진 시까지</span></div>
+      <h3>자영업자 고용보험료 지원</h3><div class="big">본인 고용보험료 50~80% 환급, 최대 5년</div>
+      <p>대표 본인이 자영업자 고용보험에 가입하면 보험료 대부분을 돌려받습니다. 폐업하면 실업급여를 받을 수 있는 안전망입니다.</p>
+      <p class="how">신규 가입: 근로복지공단 토탈서비스 · 기존 가입자: 소상공인24</p>
+      <a href="https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000117022" target="_blank" rel="noopener">공고 보기</a></article>
+    <article class="card key"><div class="top"><span class="pill okp">상시 가입</span><span class="pill chk">이번 수집 외 제도</span></div>
+      <h3>노란우산공제</h3><div class="big">소상공인 퇴직금 공제, 납입액 소득공제</div>
+      <p>매달 넣은 돈을 폐업이나 노령 때 목돈으로 받고, 넣는 동안은 소득공제를 받습니다. 압류가 금지된 돈이라 사업이 어려워져도 지켜집니다. 공제 한도는 사업소득에 따라 다르니 가입할 때 확인하세요.</p>
+      <p class="how">중소기업중앙회 노란우산 누리집 또는 시중은행</p></article>
+    <article class="card"><div class="top"><span class="pill hot">11월 30일까지</span></div>
+      <h3>소상공인 무료 법률·세무·노무 상담</h3><div class="big">간편 상담 무료</div>
+      <p>계약 분쟁, 중개보조원 계약, 세금 신고 같은 문제를 물어볼 수 있습니다. 위의 업종 코드 문제도 여기서 물어보면 됩니다.</p>
+      <a href="https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000123334" target="_blank" rel="noopener">공고 보기</a></article>
+    <article class="card"><div class="top"><span class="pill hot">11월 30일까지</span></div>
+      <h3>찾아가는 1:1 디지털 교육</h3><div class="big">사무실로 찾아와서 온라인 홍보 교육</div>
+      <p>블로그, 유튜브, 지도 앱 등록처럼 매물과 사무소를 온라인으로 알릴 때 도움이 됩니다.</p>
+      <a href="https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000122273" target="_blank" rel="noopener">공고 보기</a></article>
+    <article class="card"><div class="top"><span class="pill wait">예산 소진 여부 확인</span></div>
+      <h3>소상공인 경영안정 바우처</h3><div class="big">사업장당 25만 원</div>
+      <p>2025년 매출 1억 400만 원 미만이고 영업 중인 소상공인. 공과금, 4대 보험료, 차량 연료비에 씁니다. 2월에 시작한 사업이라 예산이 남았는지 먼저 확인하세요.</p>
+      <p class="how">소상공인24 온라인</p>
+      <a href="https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000117908" target="_blank" rel="noopener">공고 보기</a></article>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><h2>업종 확인 후 해볼 것</h2><p>신용보증재단 보증이나 소상공인 자금을 거치는 사업이라 부동산업이 제한될 수 있습니다.</p></div>
+  <div class="grid">
+    <article class="card"><div class="top"><span class="pill chk">업종 확인</span><span class="pill okp">예산 소진 시까지</span></div>
+      <h3>비즈플러스카드</h3><div class="big">카드 한도 최대 1,000만 원</div>
+      <p>연회비 없음, 최대 6개월 무이자 할부, 1년간 사용액 3% 캐시백(최대 10만 원). 업력 6개월 이상, 신용점수 595~964점.</p>
+      <p class="how">지역신용보증재단 보증 → IBK기업은행 카드 신청</p>
+      <a href="https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000119801" target="_blank" rel="noopener">공고 보기</a></article>
+    <article class="card"><div class="top"><span class="pill chk">업종 확인</span><span class="pill wait">상·하반기 공고</span></div>
+      <h3>창원시 소상공인 경영환경개선</h3><div class="big">인테리어·간판 등 최대 200만 원(70%)</div>
+      <p>6개월 이상 영업한 소상공인. 사무소를 옮기거나 간판을 바꿀 때 맞춰 신청하면 좋습니다.</p>
+      <a href="https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000117571" target="_blank" rel="noopener">지난 공고 보기</a></article>
+    <article class="card"><div class="top"><span class="pill chk">업종 확인</span><span class="pill okp">예산 소진 시까지</span></div>
+      <h3>소상공인 정책자금 · 경남신용보증재단 보증</h3><div class="big">저금리 운영자금, 보증부 대출</div>
+      <p>업종 코드가 대상이면 운영자금을 낮은 금리로 빌릴 수 있습니다.</p>
+      <a href="https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000126965" target="_blank" rel="noopener">소진공 공고</a> · <a href="https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000117526" target="_blank" rel="noopener">경남 소상공인 자금</a></article>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><h2>직원을 뽑을 계획이라면</h2></div>
+  <div class="grid">
+    <article class="card"><div class="top"><span class="pill wait">채용 전에 신청</span></div>
+      <h3>청년일자리도약장려금 (비수도권 우대형)</h3><div class="big">회사에 1년간 최대 720만 원 + 청년 본인 2년간 480~720만 원</div>
+      <p>만 15~34세를 정규직으로 채용할 때. 5인 이상 우선지원대상기업이 원칙이라 소규모 사무소는 조건을 먼저 확인하세요. 채용부터 하면 못 받습니다.</p>
+      <a href="https://www.korea.kr/news/policyNewsView.do?newsId=148961581&call_from=rsslink" target="_blank" rel="noopener">정책브리핑</a></article>
+    <article class="card"><div class="top"><span class="pill chk">이번 수집 외 제도</span></div>
+      <h3>두루누리 사회보험료 지원</h3><div class="big">저임금 근로자 고용보험·국민연금 보험료 일부 지원</div>
+      <p>10인 미만 사업장이 월급이 일정 금액 이하인 직원을 고용할 때 회사와 직원 부담분을 지원합니다. 현재 지원 기준은 근로복지공단에 확인하세요.</p></article>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><h2>확인하는 순서</h2></div>
+  <div class="box">
+    <ol class="steps">
+      <li>사업자등록증에서 <b>업종 코드</b> 확인 (홈택스 사업자등록증명에서도 볼 수 있음)</li>
+      <li>소상공인시장진흥공단(1357)에 "업종 코드 ○○○○○인데 정책자금, 비즈플러스카드 신청 되나요?" 문의</li>
+      <li>바로 되는 것부터 신청: 자영업자 고용보험료 지원, 노란우산공제, 무료 상담(11/30)</li>
+      <li>직원을 뽑을 계획이면 채용 전에 청년일자리도약장려금 조건 확인</li>
+    </ol>
+  </div>
+  <div class="contacts">
+    <div><b>소상공인시장진흥공단</b>정책자금, 바우처 <span>1357</span></div>
+    <div><b>신용보증재단중앙회</b>비즈플러스카드 <span>1588-7365</span></div>
+    <div><b>경남신용보증재단</b>보증 <span>1644-2900</span></div>
+    <div><b>근로복지공단</b>고용보험, 두루누리 <span>1588-0075</span></div>
+    <div><b>고용노동부 상담센터</b>청년일자리도약장려금 <span>1350</span></div>
+    <div><b>국세청 상담센터</b>세액감면 업종 <span>126</span></div>
+  </div>
+</section>
+
+<details class="src">
+  <summary>출처 보기</summary>
+  <ul>
+    <li><a href="https://www.tosspayments.com/blog/articles/21096" target="_blank" rel="noopener">토스페이먼츠: 정책자금 신청 불가 업종</a></li>
+    <li><a href="https://braindetox.kr/posts/small_business_policy_fund_guide.html" target="_blank" rel="noopener">소상공인 정책자금 업종 예외 설명 (블로그)</a></li>
+    <li><a href="https://news.tf.co.kr/read/ogmeta/1812589.htm" target="_blank" rel="noopener">더팩트: 2020년 소상공인 지원금 대상 업종</a></li>
+    <li><a href="https://wikidocs.net/blog/@Insight_Lab/27098/" target="_blank" rel="noopener">창업중소기업 세액감면 업종 정리</a></li>
+    <li><a href="https://www.law.go.kr/LSW/expcInfoP.do?expcSeq=340011" target="_blank" rel="noopener">법제처 법령해석: 창업 세액감면</a></li>
+    <li><a href="https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000117022" target="_blank" rel="noopener">기업마당: 소상공인 고용보험료 지원</a></li>
+    <li><a href="https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000123334" target="_blank" rel="noopener">기업마당: 소상공인 무료 법률·세무·노무 상담</a></li>
+    <li><a href="https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000122273" target="_blank" rel="noopener">기업마당: 찾아가는 1:1 디지털 교육</a></li>
+    <li><a href="https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000117908" target="_blank" rel="noopener">기업마당: 소상공인 경영안정 바우처</a></li>
+    <li><a href="https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000119801" target="_blank" rel="noopener">기업마당: 비즈플러스카드</a></li>
+    <li><a href="https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000117571" target="_blank" rel="noopener">기업마당: 창원시 소상공인 경영환경개선</a></li>
+    <li><a href="https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000126965" target="_blank" rel="noopener">기업마당: 소상공인 정책자금 5차 변경</a></li>
+    <li><a href="https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000117526" target="_blank" rel="noopener">기업마당: 경남 소상공인 정책자금 운용계획</a></li>
+    <li><a href="https://www.korea.kr/news/policyNewsView.do?newsId=148961581&call_from=rsslink" target="_blank" rel="noopener">정책브리핑: 청년일자리도약장려금</a></li>
+  </ul>
+</details>
+
+<footer>2026년 11월 7일 기준 공개 자료로 정리한 참고용입니다. 노란우산공제와 두루누리는 이번 공고 수집에 들어 있지 않은 상시 제도라 현재 조건을 따로 확인하세요.</footer>
+</div>

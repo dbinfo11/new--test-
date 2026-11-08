@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="ko">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>지금 모집 중인 지원사업</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@700;800&family=IBM+Plex+Sans+KR:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+/* Layout: 마감 순 타임라인 바 → 먼저 확인할 것(업력 7년) → 모집 중 카드(마감 빠른 순) → 추천 순서 → 바뀐 내용 → 마감된 것과 다음 시기 → 출처. 11월 8일 기준 스냅샷 */
+:root{
+  --bg:#f4f5f2;--surface:#fff;--ink:#1d2226;--muted:#5c6670;--line:#d8dcd5;
+  --accent:#2a5d78;--accent-soft:#e2edf2;--warn:#a6560c;--warn-soft:#fbeedd;--ok:#2d6a3e;--ok-soft:#e2f0e5;--wait:#5b5f8a;--wait-soft:#e9e9f4;--bad:#a33a2a;--bad-soft:#f8e3df;
+  --f-display:"Gothic A1","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --f-body:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#13181b;--surface:#1b2226;--ink:#e6eaec;--muted:#9aa6ad;--line:#2e383d;
+  --accent:#7cc0dc;--accent-soft:#1d3440;--warn:#f0a95c;--warn-soft:#3a2a17;--ok:#86c999;--ok-soft:#1c3324;--wait:#aeb2e0;--wait-soft:#272a40;--bad:#ef8a7a;--bad-soft:#3b201c;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#13181b;--surface:#1b2226;--ink:#e6eaec;--muted:#9aa6ad;--line:#2e383d;
+  --accent:#7cc0dc;--accent-soft:#1d3440;--warn:#f0a95c;--warn-soft:#3a2a17;--ok:#86c999;--ok-soft:#1c3324;--wait:#aeb2e0;--wait-soft:#272a40;--bad:#ef8a7a;--bad-soft:#3b201c;color-scheme:dark}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:940px;margin:0 auto;padding-block:28px 60px;display:grid;gap:28px}
+h1,h2,h3{font-family:var(--f-display);margin:0;line-height:1.3;text-wrap:balance}
+h1{font-size:clamp(25px,4.6vw,34px);font-weight:800}
+h2{font-size:20px;font-weight:800}
+h3{font-size:16px;font-weight:700}
+p{margin:0}
+a{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+header{display:grid;gap:10px;padding-bottom:18px;border-bottom:2px solid var(--ink)}
+.eyebrow{font-size:12px;letter-spacing:.08em;color:var(--muted);font-weight:600}
+.lede{color:var(--muted);max-width:68ch}
+section{display:grid;gap:12px}
+.sec-head{display:grid;gap:4px}
+.sec-head p{color:var(--muted);font-size:14px;max-width:72ch}
+
+.dbar{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.dbar div{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px;display:grid;gap:2px;min-width:0}
+.dbar b{font-family:var(--f-mono);font-size:18px;font-variant-numeric:tabular-nums}
+.dbar span{font-size:12.5px;color:var(--muted)}
+.dbar .urgent{border-color:var(--bad);background:var(--bad-soft)}
+.dbar .urgent b{color:var(--bad)}
+.dbar .soon{border-color:var(--warn)}
+.dbar .soon b{color:var(--warn)}
+.dbar .always b{color:var(--ok)}
+
+.alert{background:var(--accent-soft);border-radius:10px;padding:16px 18px;display:grid;gap:8px}
+.alert ul{margin:0;padding-left:18px;display:grid;gap:5px;font-size:14px}
+
+.list{display:grid;gap:10px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px 18px;display:grid;gap:6px;min-width:0}
+.card.key{border-color:var(--accent);box-shadow:inset 3px 0 0 var(--accent)}
+.ctop{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.pill{font-size:11.5px;font-weight:600;border-radius:4px;padding:1px 7px;white-space:nowrap}
+.d-urgent{background:var(--bad-soft);color:var(--bad)}
+.d-soon{background:var(--warn-soft);color:var(--warn)}
+.d-always{background:var(--ok-soft);color:var(--ok)}
+.fit-hi{background:var(--accent);color:var(--surface)}
+.fit-mid{background:var(--accent-soft);color:var(--accent)}
+.fit-lo{background:var(--wait-soft);color:var(--wait)}
+.new{border:1px solid var(--accent);color:var(--accent)}
+.big{font-family:var(--f-display);font-weight:700;font-size:16px}
+.card p{font-size:14px}
+.row{display:grid;grid-template-columns:72px 1fr;gap:10px;font-size:14px}
+.row dt{color:var(--muted);font-size:12.5px;padding-top:2px;margin:0}
+.row dd{margin:0;min-width:0}
+.card dl{margin:4px 0 0;display:grid;gap:4px}
+.card a{font-size:13px;font-weight:600}
+
+.steps{margin:0;padding-left:22px;display:grid;gap:8px;font-size:14.5px}
+.steps b{font-family:var(--f-display)}
+
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+table{width:100%;border-collapse:collapse;min-width:640px;font-size:14px}
+th,td{text-align:left;vertical-align:top;padding:10px 12px;border-bottom:1px solid var(--line)}
+th{font-size:12px;letter-spacing:.04em;color:var(--muted);font-weight:600;background:var(--bg)}
+tr:last-child td{border-bottom:0}
+td:first-child{font-weight:600;width:28%}
+.was{color:var(--muted);text-decoration:line-through}
+
+details.src{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px 16px}
+details.src summary{cursor:pointer;font-weight:600}
+details.src ul{margin:10px 0 0;padding-left:18px;display:grid;gap:4px;font-size:13px;word-break:break-all}
+footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:14px}
+@media (max-width:560px){.row{grid-template-columns:1fr;gap:0}}
+</style>
+<div class="wrap">
+<header>
+  <div class="eyebrow">창원 · 30대 · 중개업 외 다른 방식 포함 · 2026년 11월 8일 기준</div>
+  <h1>지금 모집 중인 지원사업</h1>
+  <p class="lede">선착순으로 다 주는 사업은 빼고, 지금 신청할 수 있으면서 심사나 선발이 있는 것만 모았습니다. 앞서 정리한 자료에서 바뀐 내용과, 찾아봤지만 이미 마감된 것도 함께 적었습니다.</p>
+</header>
+
+<div class="dbar" aria-label="마감 일정">
+  <div class="urgent"><b>11/9</b><span>유휴공간 아이디어 공모전 (D-1)</span></div>
+  <div class="soon"><b>11/13</b><span>IBK창공 (D-5)</span></div>
+  <div class="soon"><b>11/16</b><span>모두의 아이디어 기업부문 (D-8)</span></div>
+  <div class="always"><b>상시</b><span>경남 원스톱 지원센터, 투자유치 데모데이</span></div>
+</div>
+
+<div class="alert">
+  <h2>먼저 확인할 것: 업력 7년</h2>
+  <ul>
+    <li>원스톱 지원센터, 데모데이, IBK창공은 <b>창업 7년 이내 기업</b>이나 <b>기술창업을 준비하는 예비창업자</b>가 대상입니다.</li>
+    <li>중개사무소를 연 지 7년이 안 됐다면 바로 신청할 수 있습니다.</li>
+    <li>7년이 넘었다면 "AI 매칭 서비스를 새로 준비하는 예비창업자"로 볼 수 있는지 경남창조경제혁신센터(055-291-9376)에 먼저 물어보세요.</li>
+  </ul>
+</div>
+
+<section>
+  <div class="sec-head"><h2>모집 중 (마감 빠른 순)</h2></div>
+  <div class="list">
+
+    <article class="card"><div class="ctop"><span class="pill d-urgent">11월 9일 16시 마감</span><span class="pill fit-lo">작은 기회</span><span class="pill new">새로 찾음</span></div>
+      <h3>유휴공간 활성화 아이디어 공모전 "다시, 다리다"</h3>
+      <div class="big">총 210만 원 (최우수 100만 원, 우수 50만 원, 장려 30만 원)</div>
+      <dl>
+        <div class="row"><dt>주최</dt><dd>문화정원</dd></div>
+        <div class="row"><dt>맞는 점</dt><dd>비어 있는 공간을 살리는 아이디어 공모라 부동산·공간 전문성을 살릴 수 있습니다.</dd></div>
+        <div class="row"><dt>주의</dt><dd>참가 자격과 제출 양식은 확인하지 못했습니다. 상금이 작고 내일 마감이라, 이미 생각해 둔 아이디어가 있을 때만 권합니다.</dd></div>
+      </dl>
+      <a href="https://linkareer.com/activity/360396" target="_blank" rel="noopener">공고 보기 (링커리어)</a></article>
+
+    <article class="card"><div class="ctop"><span class="pill d-soon">11월 13일 마감</span><span class="pill fit-lo">도전형</span><span class="pill new">새로 찾음</span></div>
+      <h3>IBK창공 2027년 상반기 혁신 창업기업</h3>
+      <div class="big">투자·대출, 전용 사무공간, 1:1 멘토링, 판로·해외진출 프로그램</div>
+      <dl>
+        <div class="row"><dt>대상</dt><dd>업력 7년 이내, 혁신기술이나 아이디어를 가진 중소기업. 거점은 마포, 구로, 대전, <b>부산</b>, 전남광주, 대구</dd></div>
+        <div class="row"><dt>맞는 점</dt><dd>창원에서 가까운 부산 거점이 있습니다. "AI 지원제도 매칭 서비스"를 혁신 아이디어로 낼 수 있습니다.</dd></div>
+        <div class="row"><dt>주의</dt><dd>경쟁이 세고 기술 기반 스타트업 위주입니다. 5일 남아 준비 시간이 빠듯합니다.</dd></div>
+      </dl>
+      <a href="https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000127358" target="_blank" rel="noopener">공고 보기</a></article>
+
+    <article class="card key"><div class="ctop"><span class="pill d-soon">11월 16일 마감</span><span class="pill fit-mid">가볍게 도전</span><span class="pill new">새로 찾음</span></div>
+      <h3>모두의 아이디어 지정공모 기업부문</h3>
+      <div class="big">국민 아이디어 연결 + 전문가 자문, 아이디어 고도화, 특허 등 권리화 지원</div>
+      <dl>
+        <div class="row"><dt>주관</dt><dd>지식재산처, 한국발명진흥회</dd></div>
+        <div class="row"><dt>방식</dt><dd>기업이 과제를 내면 국민 아이디어를 받아 제품·서비스로 키우도록 돕습니다. <b>이메일 접수(idea@kipa.org)</b>라 부담이 적습니다.</dd></div>
+        <div class="row"><dt>과제 예시</dt><dd>"제조기업이 공장을 살 때 받을 수 있는 지원제도를 자동으로 찾아주는 방법"</dd></div>
+        <div class="row"><dt>주의</dt><dd>업종 제한은 확인하지 못했습니다. 문의 02-3459-2941</dd></div>
+      </dl>
+      <a href="https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000126611" target="_blank" rel="noopener">공고 보기</a></article>
+
+    <article class="card key"><div class="ctop"><span class="pill d-always">상시 접수</span><span class="pill fit-hi">가장 먼저</span><span class="pill new">새로 찾음</span></div>
+      <h3>경남 스타트업 원스톱 지원센터</h3>
+      <div class="big">법률·세무·특허·투자유치 등 9개 분야 전문가 상담, 서면 심화자문 기업당 연 최대 300만 원</div>
+      <dl>
+        <div class="row"><dt>대상</dt><dd>기술창업을 준비하는 예비창업자, 창업 7년 이내 기업, 신산업 분야 10년 이내 기업</dd></div>
+        <div class="row"><dt>맞는 점</dt><dd>업종 추가, 별도 법인 설립, 특허 여부를 전문가에게 무료로 정리받을 수 있습니다. 다른 사업에 지원하기 위한 기반이 됩니다.</dd></div>
+        <div class="row"><dt>신청</dt><dd>K-Startup 온라인. 문의 055-291-9376, 055-291-9309</dd></div>
+      </dl>
+      <a href="https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000127549" target="_blank" rel="noopener">공고 보기</a></article>
+
+    <article class="card"><div class="ctop"><span class="pill d-always">상시 접수</span><span class="pill fit-mid">소개서 준비 후</span><span class="pill new">새로 찾음</span></div>
+      <h3>경남 수도권 투자유치 데모데이 · 멘토링데이</h3>
+      <div class="big">수도권 VC·AC 앞 IR 피칭, 투자자 1:1 상담, 비즈니스모델 검증, 분야별 전문가 멘토링</div>
+      <dl>
+        <div class="row"><dt>대상</dt><dd>경남 소재 업력 7년 이내 스타트업, 경남 예비창업자(팀)</dd></div>
+        <div class="row"><dt>맞는 점</dt><dd>우대 분야인 "초격차 분야"에 <b>빅데이터·AI</b>가 들어 있습니다. AI 매칭 서비스로 낼 수 있습니다.</dd></div>
+        <div class="row"><dt>주의</dt><dd>선발 심사가 있으니 서비스 소개서와 실제 사용 사례를 갖춘 뒤 신청하세요.</dd></div>
+      </dl>
+      <a href="https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000118858" target="_blank" rel="noopener">공고 보기</a></article>
+
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><h2>추천 순서</h2></div>
+  <ol class="steps">
+    <li><b>원스톱 지원센터 신청 (이번 주)</b>: 업력 7년 문제부터 물어보고, 업종 추가·법인 설립·특허를 전문가 자문으로 정리합니다.</li>
+    <li><b>모두의 아이디어 기업부문 (11월 16일까지)</b>: 과제 한 장을 이메일로 냅니다. 선정되면 아이디어와 특허 지원을 받습니다.</li>
+    <li><b>서비스 소개서 1장 + 상담 사례 기록</b>: 상담표를 쓴 고객 사례를 3~5건 모읍니다.</li>
+    <li><b>데모데이 신청 (소개서가 준비되면)</b>: 투자자 피드백을 받고, 2027년 공고 지원서에 쓸 경력을 만듭니다.</li>
+    <li><b>IBK창공, 유휴공간 공모전</b>: 마감이 빠듯하니 여유가 있을 때만 도전합니다.</li>
+  </ol>
+</section>
+
+<section>
+  <div class="sec-head"><h2>앞선 자료에서 바뀐 내용</h2><p>「중개사무소 심사형 지원사업」 문서에 이미 반영했습니다.</p></div>
+  <div class="tbl"><table>
+    <thead><tr><th>항목</th><th>바뀐 내용</th></tr></thead>
+    <tbody>
+      <tr><td>국토·교통 데이터 활용 경진대회 접수 시기</td><td><span class="was">2027년 하반기</span> → <b>4~5월 접수</b> (2026년은 4월 6일~5월 29일)</td></tr>
+      <tr><td>국토·교통 데이터 활용 경진대회 참가 자격</td><td><b>국민 누구나 개인 또는 3인 이내 팀</b>으로 참가 가능. 부동산업 제한과 상관없음 (공무원과 국토부 산하 공공기관 직원은 제외)</td></tr>
+      <tr><td>국토·교통 데이터 활용 경진대회 상금</td><td>총 3,400만 원 → 대상 700만 원, 우수상 8팀과 특별상 1팀 각 300만 원으로 구체화</td></tr>
+      <tr><td>"11월 8일 마감" 검색 결과</td><td>국토교통 경진대회가 아니라 같은 목록에 실린 다른 공모전 일정이었습니다. 국토교통 경진대회는 이미 마감입니다.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <div class="sec-head"><h2>찾아봤지만 이미 마감된 것</h2><p>다음 시기를 적어 두었습니다. 수집기를 돌릴 때 공고가 다시 뜨는지 보면 됩니다.</p></div>
+  <div class="tbl"><table>
+    <thead><tr><th>사업</th><th>2026년 마감</th><th>다음 시기와 메모</th></tr></thead>
+    <tbody>
+      <tr><td>AI 라이프 솔루션 챌린지 (산업통상부)</td><td>10월 31일</td><td>2027년 가을 예상. 개인·팀·누구나 참가, 대국민 투표 50% + 심사 50%. 8월 아이디어 챌린지와 연계</td></tr>
+      <tr><td>우리 모두의 R&amp;D 공모전 (산업통상부)</td><td>11월 2일</td><td>2027년 가을 예상. 국민 누구나 개인·팀, 1인 최대 3건</td></tr>
+      <tr><td>국토·교통 데이터 활용 경진대회</td><td>5월 29일</td><td>2027년 4~5월. 이 문서에서 가장 잘 맞는 대회</td></tr>
+      <tr><td>범정부 공공데이터·AI 활용 창업경진대회</td><td>8월 31일</td><td>2027년 상반기 시도 예선부터. 11월에 왕중왕전</td></tr>
+      <tr><td>모두의 아이디어 (개인 부문)</td><td>4월 15일</td><td>2027년 1~4월 예상. 총상금 7.8억 원, 금상 1,000만 원, 왕중왕전 1등 1억 원 (2026년 기준)</td></tr>
+      <tr><td>창원시 AI·데이터 활용 공모전</td><td>9월 30일</td><td>대학생·대학원생 대상이라 해당 없음</td></tr>
+      <tr><td>고용노동 공공데이터·AI 활용 공모전</td><td>상반기</td><td>7월 시상 완료. 2027년 상반기 예상</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<details class="src">
+  <summary>출처 보기</summary>
+  <ul>
+    <li><a href="https://linkareer.com/activity/360396" target="_blank" rel="noopener">유휴공간 활성화 아이디어 공모전 (링커리어)</a></li>
+    <li><a href="https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000127358" target="_blank" rel="noopener">IBK창공 2027 상반기 (기업마당)</a></li>
+    <li><a href="https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000126611" target="_blank" rel="noopener">모두의 아이디어 지정공모 기업부문 (기업마당)</a></li>
+    <li><a href="https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000127549" target="_blank" rel="noopener">경남 스타트업 원스톱 지원센터 (기업마당)</a></li>
+    <li><a href="https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000118858" target="_blank" rel="noopener">경남 수도권 투자유치 데모데이 (기업마당)</a></li>
+    <li><a href="https://www.etoday.co.kr/news/view/2572714" target="_blank" rel="noopener">국토·교통 데이터 활용 경진대회 (이투데이)</a></li>
+    <li><a href="https://www.newsis.com/view/NISX20260405_0003578125" target="_blank" rel="noopener">국토·교통 데이터 활용 경진대회 (뉴시스)</a></li>
+    <li><a href="https://www.contestkorea.com/sub/view.php?int_gbn=1&amp;Txt_bcode=031410001&amp;str_no=202604100002" target="_blank" rel="noopener">2026 국토교통 데이터활용 경진대회 (콘테스트코리아)</a></li>
+    <li><a href="https://www.motir.go.kr/kor/article/ATCL2826a2625/71351/view" target="_blank" rel="noopener">AI 라이프 솔루션 챌린지 (산업통상부)</a></li>
+    <li><a href="https://www.dailian.co.kr/news/view/1673666/" target="_blank" rel="noopener">2026 AI 라이프 챌린지 (데일리안)</a></li>
+    <li><a href="https://www.motir.go.kr/kor/article/ATCL2826a2625/71358/view" target="_blank" rel="noopener">우리 모두의 R&amp;D 공모전 (산업통상부)</a></li>
+    <li><a href="https://linkareer.com/activity/355751" target="_blank" rel="noopener">우리 모두의 R&amp;D 공모전 (링커리어)</a></li>
+    <li><a href="https://thinkyou.co.kr/mobile/contest/62362/" target="_blank" rel="noopener">제14회 범정부 공공데이터·AI 활용 창업경진대회 (씽굿)</a></li>
+    <li><a href="https://thinkyou.co.kr/contest/60440/" target="_blank" rel="noopener">모두의 아이디어 공모 (씽굿)</a></li>
+    <li><a href="https://thinkyou.co.kr/contest/63697" target="_blank" rel="noopener">창원시 AI·데이터 활용 공모전 (씽굿)</a></li>
+    <li><a href="https://eiec.kdi.re.kr/policy/materialView.do?num=284507" target="_blank" rel="noopener">고용노동 공공데이터·AI 공모전 시상 (KDI 경제정보센터)</a></li>
+  </ul>
+</details>
+
+<footer>2026년 11월 8일 기준으로 확인한 내용입니다. 마감일과 자격은 신청 전에 각 공고 원문에서 다시 확인하세요.</footer>
+</div>

@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="ko">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>매입 지원 상담표</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@700;800&family=IBM+Plex+Sans+KR:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+/* Layout: 상담 정보 입력(사전 진단 7문항) → 예상 절감액 → 단계별 추천 지원(매입 전 세금 / 자금 / 입주 후) → 주의사항 → 일정 → 문의처 → 중개사 메모. 중개사가 고객과 마주 앉아 같이 보는 화면 */
+:root{
+  --bg:#f5f6f4;--surface:#fff;--ink:#1c2328;--muted:#5b6670;--line:#d9ddd8;
+  --accent:#1f5f7a;--accent-soft:#e3eef2;--warn:#a6560c;--warn-soft:#fbeedd;--ok:#2d6a3e;--ok-soft:#e2f0e5;--wait:#5b5f8a;--wait-soft:#e9e9f4;--bad:#a33a2a;--bad-soft:#f8e3df;
+  --f-display:"Gothic A1","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --f-body:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#13181b;--surface:#1b2226;--ink:#e6eaec;--muted:#9aa6ad;--line:#2e383d;
+  --accent:#7cc0dc;--accent-soft:#1d3440;--warn:#f0a95c;--warn-soft:#3a2a17;--ok:#86c999;--ok-soft:#1c3324;--wait:#aeb2e0;--wait-soft:#272a40;--bad:#ef8a7a;--bad-soft:#3b201c;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#13181b;--surface:#1b2226;--ink:#e6eaec;--muted:#9aa6ad;--line:#2e383d;
+  --accent:#7cc0dc;--accent-soft:#1d3440;--warn:#f0a95c;--warn-soft:#3a2a17;--ok:#86c999;--ok-soft:#1c3324;--wait:#aeb2e0;--wait-soft:#272a40;--bad:#ef8a7a;--bad-soft:#3b201c;color-scheme:dark}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1000px;margin:0 auto;padding-block:28px 64px;display:grid;gap:28px}
+h1,h2,h3{font-family:var(--f-display);margin:0;line-height:1.3;text-wrap:balance}
+h1{font-size:clamp(25px,4.4vw,34px);font-weight:800}
+h2{font-size:20px;font-weight:800}
+h3{font-size:16px;font-weight:700}
+p{margin:0}
+a{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+header{display:grid;gap:10px;padding-bottom:18px;border-bottom:2px solid var(--ink)}
+.eyebrow{font-size:12px;letter-spacing:.08em;color:var(--muted);font-weight:600}
+.lede{color:var(--muted);max-width:70ch}
+.hrow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between}
+button{font:inherit;cursor:pointer}
+.btn{font-size:13.5px;font-weight:600;border:1px solid var(--accent);color:var(--accent);background:var(--surface);border-radius:6px;padding:6px 12px}
+section{display:grid;gap:12px}
+.sec-head{display:grid;gap:4px}
+.sec-head p{color:var(--muted);font-size:14px;max-width:72ch}
+
+.form{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px;display:grid;gap:14px}
+.q{display:grid;grid-template-columns:150px 1fr;gap:6px 14px;align-items:start}
+.q > .lab{font-weight:600;font-size:14px;padding-top:5px}
+.q > .lab small{display:block;font-weight:400;color:var(--muted);font-size:12px}
+.opts{display:flex;flex-wrap:wrap;gap:6px;min-width:0}
+.opt{font-size:13.5px;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:999px;padding:5px 12px}
+.opt[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+.money{display:flex;flex-wrap:wrap;gap:10px;align-items:center;font-size:14px}
+.money label{display:flex;gap:6px;align-items:center}
+.money input{font:inherit;width:92px;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:6px;padding:5px 8px;font-family:var(--f-mono)}
+
+.est{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.est div{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px 14px;display:grid;gap:2px;min-width:0}
+.est b{font-family:var(--f-display);font-size:22px;font-variant-numeric:tabular-nums}
+.est span{font-size:12.5px;color:var(--muted)}
+.est .good b{color:var(--ok)}
+.est .cash b{color:var(--warn)}
+
+.stage{display:grid;gap:10px}
+.stage > h3{display:flex;gap:8px;align-items:baseline}
+.stage > h3 small{font-family:var(--f-body);font-weight:400;color:var(--muted);font-size:13px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:10px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 16px;display:grid;gap:6px;align-content:start;min-width:0}
+.card.key{border-color:var(--accent);box-shadow:inset 3px 0 0 var(--accent)}
+.ctop{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.pill{font-size:11.5px;font-weight:600;border-radius:4px;padding:1px 7px;white-space:nowrap}
+.hot{background:var(--warn-soft);color:var(--warn)}
+.okp{background:var(--ok-soft);color:var(--ok)}
+.wait{background:var(--wait-soft);color:var(--wait)}
+.any{background:var(--accent-soft);color:var(--accent)}
+.big{font-family:var(--f-display);font-weight:700;font-size:15.5px}
+.card p{font-size:14px}
+.why{font-size:13px;color:var(--muted)}
+.card a{font-size:13px;font-weight:600}
+.empty{color:var(--muted);font-size:14px;background:var(--surface);border:1px dashed var(--line);border-radius:8px;padding:12px 14px}
+
+.warns{display:grid;gap:8px}
+.w{border-left:3px solid var(--warn);background:var(--surface);padding:10px 14px;border-radius:0 6px 6px 0;font-size:14px}
+.w.bad{border-color:var(--bad);background:var(--bad-soft)}
+.w b{color:var(--warn)}
+.w.bad b{color:var(--bad)}
+
+.timeline{display:grid;border-left:2px solid var(--line);margin-left:6px}
+.tl{position:relative;padding:0 0 12px 18px;display:grid;gap:2px}
+.tl::before{content:"";position:absolute;left:-7px;top:6px;width:12px;height:12px;border-radius:50%;background:var(--surface);border:2px solid var(--accent)}
+.tl.hot::before{border-color:var(--warn);background:var(--warn-soft)}
+.tl b{font-family:var(--f-display)}
+.tl span{font-size:14px;color:var(--muted)}
+
+.contacts{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px}
+.contacts div{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-size:13.5px;min-width:0}
+.contacts b{display:block;font-family:var(--f-display)}
+.contacts span{font-family:var(--f-mono);user-select:all}
+details.memo{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px 16px}
+details.memo summary{cursor:pointer;font-weight:600}
+details.memo ul{margin:10px 0 0;padding-left:18px;display:grid;gap:6px;font-size:14px}
+footer{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:14px}
+
+@media (max-width:620px){.q{grid-template-columns:1fr}.q > .lab{padding-top:0}}
+@media print{.no-print{display:none!important}body{background:#fff}.form{break-inside:avoid}.card{break-inside:avoid}}
+</style>
+<div class="wrap">
+<header>
+  <div class="hrow">
+    <div class="eyebrow">창원 공장 · 지식산업센터 매입 고객 상담용</div>
+    <div class="no-print" style="display:flex;gap:6px"><button class="btn" id="reset" type="button">처음부터</button><button class="btn" id="print" type="button">인쇄</button></div>
+  </div>
+  <h1>매입 지원 상담표</h1>
+  <p class="lede">고객 상황을 아래에서 고르면 받을 수 있는 지원과 주의사항만 남습니다. 2026년 11월 7일 기준 공개 자료로 만들었고, 금액은 참고용 추정치입니다. 세금은 세무사, 자금은 각 기관에 최종 확인하세요.</p>
+</header>
+
+<section>
+  <div class="sec-head"><h2>1. 고객 상황</h2><p>모르는 항목은 비워 두면 그 조건이 필요한 지원은 "확인 필요"로 남습니다.</p></div>
+  <div class="form" id="form">
+    <div class="q"><div class="lab">업력<small>창업일부터 취득일까지</small></div><div class="opts" data-k="age">
+      <button class="opt" data-v="u4" aria-pressed="false">4년 이내</button><button class="opt" data-v="u7" aria-pressed="false">4~7년</button><button class="opt" data-v="o7" aria-pressed="false">7년 이상</button></div></div>
+    <div class="q"><div class="lab">업종·품목</div><div class="opts" data-k="ind">
+      <button class="opt" data-v="gen" aria-pressed="false">일반 제조</button><button class="opt" data-v="sbj" aria-pressed="false">소부장·방산·로봇</button><button class="opt" data-v="auto" aria-pressed="false">자동차부품</button><button class="opt" data-v="coop" aria-pressed="false">조선·항공·원전 협력</button><button class="opt" data-v="root" aria-pressed="false">뿌리(주조·금형·용접·열처리)</button></div></div>
+    <div class="q"><div class="lab">직원<small>가족 외 고용, 산재보험 가입</small></div><div class="opts" data-k="emp">
+      <button class="opt" data-v="none" aria-pressed="false">없음(대표·가족만)</button><button class="opt" data-v="u50" aria-pressed="false">50인 미만</button><button class="opt" data-v="o50" aria-pressed="false">50인 이상</button></div></div>
+    <div class="q"><div class="lab">매물 종류</div><div class="opts" data-k="prop">
+      <button class="opt" data-v="fac" aria-pressed="false">일반 공장(기존)</button><button class="opt" data-v="indp" aria-pressed="false">산업단지 안 공장</button><button class="opt" data-v="kcnew" aria-pressed="false">지식산업센터 최초 분양</button><button class="opt" data-v="kcold" aria-pressed="false">지식산업센터 기존 매물</button><button class="opt" data-v="auc" aria-pressed="false">경매·공매</button></div></div>
+    <div class="q"><div class="lab">기업부설연구소</div><div class="opts" data-k="lab">
+      <button class="opt" data-v="y" aria-pressed="false">있음·만들 예정</button><button class="opt" data-v="n" aria-pressed="false">없음</button></div></div>
+    <div class="q"><div class="lab">본사·사업장 위치</div><div class="opts" data-k="loc">
+      <button class="opt" data-v="cw" aria-pressed="false">창원</button><button class="opt" data-v="gn" aria-pressed="false">경남 다른 시군</button><button class="opt" data-v="etc" aria-pressed="false">그 외</button></div></div>
+    <div class="q"><div class="lab">일부 임대 계획</div><div class="opts" data-k="lease">
+      <button class="opt" data-v="y" aria-pressed="false">있음</button><button class="opt" data-v="n" aria-pressed="false">없음</button></div></div>
+    <div class="q"><div class="lab">금액<small>억 원, 선택</small></div><div class="money">
+      <label for="price">매입가 <input id="price" type="number" min="0" step="0.5" inputmode="decimal" placeholder="20"></label>
+      <label for="bld">그중 건물분 <input id="bld" type="number" min="0" step="0.5" inputmode="decimal" placeholder="8"></label>
+      <label for="loan">대출 예정 <input id="loan" type="number" min="0" step="0.5" inputmode="decimal" placeholder="10"></label>
+    </div></div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><h2>2. 예상 금액</h2><p>입력한 금액으로 계산한 추정치입니다. 취득세는 본세 4% 기준이며 농어촌특별세·지방교육세는 별도입니다.</p></div>
+  <div class="est">
+    <div class="good"><b id="e-tax">-</b><span id="e-tax-l">취득세 감면 예상</span></div>
+    <div class="good"><b id="e-int">-</b><span>이자 지원 예상(창원시 육성자금, 연간)</span></div>
+    <div class="cash"><b id="e-vat">-</b><span>잔금 때 따로 필요한 건물분 부가세(나중에 환급 가능)</span></div>
+    <div><b id="e-cnt">-</b><span>해당 가능한 지원</span></div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><h2>3. 추천 지원</h2></div>
+  <div class="stage"><h3>매입 전: 세금과 계약 시점 <small>계약서 쓰기 전에 정할 것</small></h3><div class="grid" id="st-pre"></div></div>
+  <div class="stage"><h3>매입 자금 <small>대출·보증·보조</small></h3><div class="grid" id="st-fund"></div></div>
+  <div class="stage"><h3>입주한 뒤 <small>설비·안전·에너지</small></h3><div class="grid" id="st-post"></div></div>
+</section>
+
+<section>
+  <div class="sec-head"><h2>4. 꼭 확인할 것</h2></div>
+  <div class="warns" id="warns"></div>
+</section>
+
+<section>
+  <div class="sec-head"><h2>5. 일정</h2></div>
+  <div class="timeline">
+    <div class="tl hot"><b>2026년 11월 19일</b><span>소부장 투자지원금 3차 마감(토지 매입·설비 최대 50%). 품목 해당 고객만</span></div>
+    <div class="tl hot"><b>2026년 12월 31일</b><span>창업 취득세 75% 감면 취득분 마감(2027년 연장 미확인). 산업은행 온렌딩, 산재예방 융자, 창원시 육성자금 접수 마감</span></div>
+    <div class="tl"><b>2026년 12월</b><span>중진공 정책자금 서류 준비(재무제표, 사업계획, 매매계약 예정서류)</span></div>
+    <div class="tl"><b>2027년 1월 초</b><span>중진공 정책자금 접수 시작. 경남 육성자금 1분기 공고</span></div>
+    <div class="tl"><b>2027년 1~3월</b><span>클린사업장·안전일터, 스마트공장, 혁신바우처, 업종별 패키지 공고</span></div>
+    <div class="tl"><b>2027년 상반기</b><span>미래차 전환 부품기업 이자 지원 공고 예상</span></div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><h2>6. 문의처</h2></div>
+  <div class="contacts">
+    <div><b>중소벤처기업진흥공단</b>정책자금 <span>1811-3655</span></div>
+    <div><b>창원시 지역경제과</b>중소기업육성자금 <span>055-225-3215</span></div>
+    <div><b>창원시 투자유치단</b>투자보조금 <span>055-225-2653</span></div>
+    <div><b>경남투자경제진흥원</b>경남 육성자금 <span>055-230-2901</span></div>
+    <div><b>경남신용보증재단</b>보증 <span>1644-2900</span></div>
+    <div><b>창원산업진흥원</b>탄소중립·기업지원 <span>055-716-8413</span></div>
+    <div><b>안전보건공단</b>안전일터·산재예방 융자 <span>1644-4544</span></div>
+    <div><b>근로복지공단</b>산재보험 가입 <span>1588-0075</span></div>
+  </div>
+</section>
+
+<details class="memo no-print">
+  <summary>중개사 메모 (고객에게 보여주지 않는 부분)</summary>
+  <ul>
+    <li><b>정책자금 알선 수수료는 받지 않습니다.</b> 정책자금 "제3자 부당개입" 규제가 법제화될 예정입니다. 정보 안내와 기관·세무사 연결까지만 합니다.</li>
+    <li>컨설팅은 "매입 고객에게 무료로 제공하는 지원제도 안내"로 둡니다. 지원금을 받아준다고 약속하지 않습니다.</li>
+    <li>취득세 감면액은 세무사 확인 후 안내합니다. 연구소 감면 60%는 출처가 한 곳뿐입니다.</li>
+    <li>입주 후에는 <code>공고 수집 실행.bat</code>으로 1~2주마다 새 공고를 확인해서 고객 업종에 맞는 공고를 알려주면 관계 유지에 좋습니다.</li>
+    <li>상세 근거와 출처는 <code>자료모음</code> 폴더의 가이드, TOP 10, 추가 지원 자료에 있습니다.</li>
+  </ul>
+</details>
+
+<footer>2026년 11월 7일 기준 공개 자료로 만든 참고용 상담표입니다. 실제 지원 여부와 금액은 각 기관 공고와 심사 결과에 따릅니다.</footer>
+</div>
+
+<script>
+(function(){
+  var S = {age:'', ind:'', emp:'', prop:'', lab:'', loc:'', lease:''};
+  var L = {
+    easylaw:'https://www.easylaw.go.kr/CSP/CnpClsMainBtr.laf?popMenu=ov&csmSeq=632&ccfNo=4&cciNo=3&cnpClsNo=1',
+    kosmes:'https://www.kosmes.or.kr/nsh/SH/SBI/SHSBI004M0.do',
+    cwfund:'https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000117254',
+    gibamoney:'https://www.gibamoney.or.kr/main.web',
+    onlending:'https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000119239',
+    sbj:'https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000127751',
+    guar:'https://www.fnnews.com/news/202611021817411936',
+    auto:'https://kbmaeil.com/article/20260915500484',
+    safety:'https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000125563',
+    sanjae:'https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000125569',
+    smart:'https://www.smart-factory.kr',
+    energy:'https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000127264',
+    carbon:'https://www.bizinfo.go.kr/sii/siia/selectSIIA200Detail.do?pblancId=PBLN_000000000118157',
+    voucher:'https://www.mssmiv.com',
+    lawtimes:'https://www.lawtimes.co.kr/news/articleView.html?idxno=216496',
+    lab:'https://ai.bznav.com/contents/2748496',
+    vat:'https://ai.bznav.com/contents/2879408',
+    itc:'https://taxguide.im/blog/investment-tax-credit',
+    auction:'https://www.kbmaeil.com/article/202005140278504',
+    nuke:'https://www.geconomy.co.kr/news/article.html?no=320718',
+    ship:'https://www.newsis.com/view/NISX20260331_0003571081',
+    robot:'https://thevc.kr/grants/e59f597e18da232b159e4f86'
+  };
+  // c: 조건 함수(true=해당, false=제외, null=정보 부족으로 확인 필요)
+  function has(k){ return S[k] !== ''; }
+  var ITEMS = [
+    {st:'pre', key:1, t:'창업중소기업 취득세 75% 감면', b:'사업용 부동산 취득세 75% 감면, 재산세 3년 면제 후 2년 50%', s:['hot','2026.12.31 취득분까지'],
+     p:'고용 요건이 없고 기존 매물도 됩니다. 3년 안에 직접 쓰지 않거나 팔면 추징됩니다.', a:L.easylaw,
+     c:function(){ if(!has('age')) return null; return S.age==='u4'; }},
+    {st:'pre', key:1, t:'지식산업센터 최초 분양 감면', b:'최초 분양 입주자 취득세·재산세 감면', s:['any','2028년 말까지'],
+     p:'2026년 개정으로 비수도권 우대가 강화됐다고 보도됐지만 감면율은 원문 확인이 필요합니다. 전매·재매매는 제외입니다.', a:L.lawtimes,
+     c:function(){ if(!has('prop')) return null; return S.prop==='kcnew'; }},
+    {st:'pre', key:0, t:'기업부설연구소 취득세 감면', b:'연구소로 쓰는 면적의 취득세·재산세 60% 감면(비수도권)', s:['any','세무사 확인'],
+     p:'한국산업기술진흥협회의 연구소 인정이 필요합니다. 창업 4년이 지나 75% 감면을 못 받는 고객의 대안입니다. 출처가 한 곳뿐이라 세무사 확인이 필요합니다.', a:L.lab,
+     c:function(){ if(!has('lab')) return null; return S.lab==='y'; }},
+    {st:'pre', key:0, t:'산업단지 대수선 취득세 감면', b:'산단 입주기업이 산업용 건축물을 대수선하면 취득세 25% 감면, 비수도권 재산세 50%', s:['any','2028.12.31까지'],
+     p:'기존 공장을 사서 크게 고칠 계획일 때 해당합니다.', a:L.lawtimes,
+     c:function(){ if(!has('prop')) return null; return S.prop==='indp'; }},
+    {st:'pre', key:1, t:'소부장 투자지원금 (토지 매입 포함)', b:'설비투자와 토지 매입비 최대 50% 보조(기업당 국비 200억 한도)', s:['hot','3차 11월 19일 마감'],
+     p:'정부가 정한 공급망안정품목·전략물자를 생산하는 중소·중견기업. 2026년에 로봇·방산이 추가됐습니다. 품목 목록부터 확인하세요. 토지 지원금은 설비 지원금을 넘을 수 없습니다.', a:L.sbj,
+     c:function(){ if(!has('ind')) return null; return S.ind==='sbj'; }},
+    {st:'pre', key:0, t:'건물분 부가세와 포괄양수도', b:'일반 매매면 건물값의 10% 부가세. 포괄양수도면 부가세 없음', s:['okp','모든 매입'],
+     p:'매수인이 일반과세자로 등록하면 나중에 환급받지만 잔금 때는 따로 준비해야 합니다. 포괄양수도는 사업이 그대로 이어져야 하고 계약서에 명시해야 합니다.', a:L.vat,
+     c:function(){ return true; }},
+    {st:'pre', key:0, t:'통합투자세액공제', b:'새 설비 투자액의 10% 법인세 공제(중소기업)', s:['okp','설비 투자 시'],
+     p:'건물과 중고 설비는 대상이 아닙니다. 공장을 사면서 새 라인을 깔 때 설비 부분에 해당합니다.', a:L.itc,
+     c:function(){ return true; }},
+
+    {st:'fund', key:1, t:'중진공 시설자금: 창업기반', b:'업력 7년 미만, 최대 60억, 기준금리 −0.6%p(약 2.5%대)', s:['wait','2027년 1월 초 접수'],
+     p:'매입 자금의 본체입니다. 연체·체납이 있으면 탈락합니다.', a:L.kosmes,
+     c:function(){ if(!has('age')) return null; return S.age==='u4'||S.age==='u7'; }},
+    {st:'fund', key:1, t:'중진공 시설자금: 혁신성장 / 제조현장스마트화', b:'업력 7년 이상 혁신성장 최대 60억(기준 +0.2%p), 스마트공장 도입 시 최대 100억(기준 −0.3%p)', s:['wait','2027년 1월 초 접수'],
+     p:'이전하면서 라인을 새로 깔고 스마트공장을 함께 도입하면 한도가 100억까지 올라갑니다.', a:L.kosmes,
+     c:function(){ if(!has('age')) return null; return S.age==='o7'; }},
+    {st:'fund', key:1, t:'창원시 중소기업육성자금 이자 지원', b:'은행 대출 이자 연 2.5%p(거치 2년), 1.5%p(상환 1년) 지원', s:['okp','12월 31일까지 · 예산 소진 시'],
+     p:'본사와 사업장이 창원인 중소기업. 협약은행 창구에서 바로 신청해서 가장 쉽습니다. 조선·항공·원전 협력업체는 공고에 대상으로 따로 적혀 있습니다.', a:L.cwfund,
+     c:function(){ if(!has('loc')) return null; return S.loc==='cw'; }},
+    {st:'fund', key:0, t:'경상남도 중소기업육성자금', b:'시설설비자금 이자 지원(분기별 공고)', s:['wait','다음 분기 공고'],
+     p:'경남 소재 중소기업. 2024년 공고에서는 공장 매입이 포함됐습니다.', a:L.gibamoney,
+     c:function(){ if(!has('loc')) return null; return S.loc==='cw'||S.loc==='gn'; }},
+    {st:'fund', key:0, t:'산업은행 온렌딩', b:'시중은행 창구에서 받는 장기 저리 시설자금, 최장 10년', s:['hot','12월 31일까지'],
+     p:'중진공에서 떨어지거나 한도가 모자랄 때 보완합니다.', a:L.onlending,
+     c:function(){ return true; }},
+    {st:'fund', key:0, t:'신보·기보 보증, 지역 협약보증', b:'담보가 부족할 때 보증서로 대출. 지역 협약보증 3년간 4.5조 원', s:['wait','협약보증 접수 예정'],
+     p:'보증부 대출에 창원시 이자 지원을 함께 쓰면 금리가 더 내려갑니다.', a:L.guar,
+     c:function(){ return true; }},
+    {st:'fund', key:1, t:'미래차 전환 부품기업 이자 지원', b:'업체당 최대 100억, 연 2%p, 최대 8년', s:['wait','2027년 상반기 공고 예상'],
+     p:'미래차 쪽으로 투자하는 부품기업. 2026년은 4월에 마감됐습니다.', a:L.auto,
+     c:function(){ if(!has('ind')) return null; return S.ind==='auto'; }},
+    {st:'fund', key:0, t:'경매·공매 공장도 정책자금 검토', b:'낙찰가와 감정가 중 낮은 금액 기준으로 시설자금 검토', s:['any','중진공 확인'],
+     p:'2020년 안내 기준이라 현행 기준은 중진공 경남본부에 확인하세요.', a:L.auction,
+     c:function(){ if(!has('prop')) return null; return S.prop==='auc'; }},
+
+    {st:'post', key:0, t:'안전일터 조성지원 (구 클린사업장)', b:'위험 공정·기계 개선비 보조, 스마트 안전장비', s:['okp','3차 접수 중 · 2027 공고'],
+     p:'산재보험에 가입하고 근로자를 고용한 사업장. 이전하면서 설비를 재배치할 때 위험 공정을 함께 고치기 좋습니다.', a:L.safety,
+     c:function(){ if(!has('emp')) return null; return S.emp==='u50'; }},
+    {st:'post', key:0, t:'산재예방시설 융자', b:'사업장당 15억, 연 1.5%, 3년 거치 7년 상환', s:['hot','12월 31일까지'],
+     p:'근로자를 고용해 산재보험에 가입한 사업주. 보조금을 받은 기업도 신청할 수 있습니다.', a:L.sanjae,
+     c:function(){ if(!has('emp')) return null; return S.emp!=='none'; }},
+    {st:'post', key:0, t:'스마트공장 구축', b:'기초~고도화 구축비 지원, 중진공 스마트화 자금 100억과 연결', s:['wait','2027 상반기 공고'],
+     p:'라인을 새로 깔 때 같이 도입하면 좋습니다.', a:L.smart,
+     c:function(){ return true; }},
+    {st:'post', key:0, t:'에너지이용합리화 융자 · 탄소중립 컨설팅', b:'효율 설비 교체비 90% 융자(연 2.0%), 창원 기업은 900만 원 상당 컨설팅 무료', s:['okp','융자 상시 · 컨설팅 매년 2월'],
+     p:'오래된 공장을 사서 보일러, 컴프레서, 조명을 바꿀 때 씁니다.', a:L.energy,
+     c:function(){ return true; }},
+    {st:'post', key:0, t:'혁신바우처', b:'컨설팅·기술지원·마케팅 최대 5,000만 원(보조 40~85%)', s:['wait','2027 초 공고'],
+     p:'고용 요건이 없고 중대재해 예방 유형이 따로 있습니다.', a:L.voucher,
+     c:function(){ return true; }},
+    {st:'post', key:0, t:'경남 원전기업 수요맞춤형 패키지', b:'기술개발·사업화·마케팅 묶음 지원(2024년 기준 기업당 약 8,000만 원)', s:['wait','2027 공고'],
+     p:'원전 협력업체 대상. 조선·항공 협력업체는 중소조선 설계엔지니어링 지원(5년 240억)도 참고하세요.', a:L.nuke,
+     c:function(){ if(!has('ind')) return null; return S.ind==='coop'; }},
+    {st:'post', key:0, t:'경남 뿌리기업 제조로봇 보급', b:'창원 건당 최대 1억 2,000만 원', s:['wait','2027 공고'],
+     p:'주조, 금형, 용접, 열처리 공정을 로봇으로 자동화할 때.', a:L.robot,
+     c:function(){ if(!has('ind')) return null; return S.ind==='root'; }}
+  ];
+
+  function esc(s){ return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+  function num(id){ var v = parseFloat(document.getElementById(id).value); return isNaN(v) || v < 0 ? null : v; }
+  function won(eok){
+    var man = Math.round(eok * 10000);
+    if (man < 10000) return man.toLocaleString('ko-KR') + '만 원';
+    var s = (man / 10000).toFixed(2).replace(/(\.\d*?)0+$/, '$1').replace(/\.$/, '');
+    return s + '억 원';
+  }
+
+  function render(){
+    var counts = 0;
+    ['pre','fund','post'].forEach(function(st){
+      var box = document.getElementById('st-' + st);
+      var html = ITEMS.filter(function(x){ return x.st === st; }).map(function(x){
+        var r = x.c();
+        if (r === false) return '';
+        counts++;
+        var chk = r === null ? '<span class="pill any">정보 입력 시 판단</span>' : '';
+        return '<article class="card' + (x.key && r ? ' key' : '') + '"><div class="ctop"><span class="pill ' + x.s[0] + '">' + esc(x.s[1]) + '</span>' + chk + '</div>' +
+          '<h3>' + esc(x.t) + '</h3><div class="big">' + esc(x.b) + '</div><p class="why">' + esc(x.p) + '</p>' +
+          '<a href="' + esc(x.a) + '" target="_blank" rel="noopener">근거 보기</a></article>';
+      }).join('');
+      box.innerHTML = html || '<p class="empty">이 단계에서 해당하는 지원이 없습니다.</p>';
+    });
+    document.getElementById('e-cnt').textContent = counts + '개';
+
+    var price = num('price'), bld = num('bld'), loan = num('loan');
+    var taxEl = document.getElementById('e-tax'), taxL = document.getElementById('e-tax-l');
+    if (price && S.age === 'u4') { taxEl.textContent = '약 ' + won(price * 0.04 * 0.75); taxL.textContent = '창업 취득세 75% 감면 예상'; }
+    else if (price && S.lab === 'y') { taxEl.textContent = '면적 비율만큼'; taxL.textContent = '연구소 면적의 취득세 60% 감면(면적 비율 확인 필요)'; }
+    else if (S.age && S.age !== 'u4') { taxEl.textContent = '해당 없음'; taxL.textContent = '창업 4년 초과라 창업 감면 대상 아님'; }
+    else { taxEl.textContent = '-'; taxL.textContent = '업력과 매입가를 입력하세요'; }
+    document.getElementById('e-int').textContent = (loan && S.loc === 'cw') ? '약 ' + won(loan * 0.025) : (S.loc && S.loc !== 'cw' ? '해당 없음' : '-');
+    document.getElementById('e-vat').textContent = bld ? '약 ' + won(bld * 0.1) : '-';
+
+    var w = [];
+    if (S.lease === 'y') w.push(['bad','<b>정책자금으로 산 건물은 임대하면 안 됩니다.</b> 2025년 점검에서 시설을 임대한 기업 40곳(정책자금 872억 원)이 적발됐고, 2026년부터는 무단 임대 시 정책자금 신청이 막힙니다(원스트라이크 아웃). 감면받은 취득세도 추징됩니다.']);
+    if (S.prop === 'kcold') w.push(['bad','<b>지식산업센터 기존 매물은 지식산업센터 취득세 감면 대상이 아닙니다.</b> 감면은 최초 분양 입주자에게만 적용됩니다. 창업 4년 이내라면 창업 감면은 따로 검토할 수 있습니다.']);
+    if (S.prop === 'indp') w.push(['', '<b>산업단지 공장은 매입 전에 한국산업단지공단 입주계약이 필요합니다.</b> 업종이 맞지 않으면 살 수 없습니다.']);
+    if (S.emp === 'none') w.push(['', '<b>직원이 없으면 안전 관련 보조·융자 대부분이 대상이 아닙니다.</b> 대표·가족만 일하는 경우 산재보험 사업주 임의가입 여부를 근로복지공단에 확인하세요.']);
+    if (S.age === 'u4') w.push(['', '<b>창업 취득세 75% 감면은 12월 31일 취득분까지입니다.</b> 잔금일(취득일)이 해를 넘기면 받지 못할 수 있습니다. 감면 후 3년 안에 직접 쓰지 않거나 팔면 추징됩니다.']);
+    w.push(['', '<b>보조금은 계약 전에 신청합니다.</b> 대부분 투자협약(MOU)이나 사전 신청이 먼저이고, 계약부터 하면 못 받는 경우가 많습니다.']);
+    w.push(['', '<b>중진공 이차보전 상품과 지자체 이자 지원은 함께 받을 수 없습니다.</b> 보통 "중진공 직접대출 + 창원시 이자 지원" 또는 "은행 대출 + 창원시 이자 지원 + 보증"으로 묶습니다.']);
+    document.getElementById('warns').innerHTML = w.map(function(x){ return '<p class="w ' + x[0] + '">' + x[1] + '</p>'; }).join('');
+  }
+
+  document.querySelectorAll('.opts').forEach(function(g){
+    g.addEventListener('click', function(e){
+      var b = e.target.closest('.opt'); if (!b) return;
+      var k = g.dataset.k, v = b.dataset.v;
+      S[k] = S[k] === v ? '' : v;
+      g.querySelectorAll('.opt').forEach(function(o){ o.setAttribute('aria-pressed', String(o.dataset.v === S[k])); });
+      render();
+    });
+  });
+  ['price','bld','loan'].forEach(function(id){ document.getElementById(id).addEventListener('input', render); });
+  document.getElementById('reset').addEventListener('click', function(){
+    Object.keys(S).forEach(function(k){ S[k] = ''; });
+    document.querySelectorAll('.opt').forEach(function(o){ o.setAttribute('aria-pressed','false'); });
+    ['price','bld','loan'].forEach(function(id){ document.getElementById(id).value = ''; });
+    render();
+  });
+  document.getElementById('print').addEventListener('click', function(){ window.print(); });
+  render();
+})();
+</script>
