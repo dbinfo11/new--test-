@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#16191f">
+<title>철사 퍼즐</title>
+<style>
+:root{--bg:#16191f;--panel:rgba(24,28,36,.92);--line:#343b48;--ink:#e9eaee;--muted:#9ba6b6;--gold:#e5c892;--accent:#7999c7;--ok:#5fbf7f}
+html,body{margin:0;height:100%;overflow:hidden;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;overscroll-behavior:none}
+#stage canvas{display:block;position:fixed;inset:0;touch-action:none}
+button{font:inherit;color:inherit;background:#262b35;border:1px solid #3a404c;border-radius:12px;padding:10px 12px;cursor:pointer;touch-action:manipulation}
+button:active{background:#303b4c}
+[hidden]{display:none!important}
+.top{position:fixed;z-index:2;left:0;right:0;top:0;display:flex;align-items:center;gap:8px;padding:calc(env(safe-area-inset-top,0px) + 8px) calc(env(safe-area-inset-right,0px) + 12px) 8px calc(env(safe-area-inset-left,0px) + 12px);background:linear-gradient(var(--bg),rgba(22,25,31,0))}
+.top h1{font-size:17px;margin:0;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.top button{padding:7px 11px;font-size:14px}
+#timer{font-variant-numeric:tabular-nums;color:#ffd27a;font-size:15px;min-width:52px;text-align:right}
+.bottom{position:fixed;z-index:2;left:0;right:0;bottom:0;padding:0 calc(env(safe-area-inset-right,0px) + 10px) calc(env(safe-area-inset-bottom,0px) + 10px) calc(env(safe-area-inset-left,0px) + 10px);display:grid;gap:8px;background:linear-gradient(rgba(22,25,31,0),var(--bg) 40%)}
+#status{font-size:13px;color:#d9c49b;text-align:center;min-height:36px;display:grid;place-items:center;padding:0 6px;line-height:1.4}
+.modes{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.modes button{font-size:15px;padding:13px 4px;border-radius:14px}
+.modes button[aria-pressed="true"]{background:#3b4a63;border-color:var(--accent)}
+.tools{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
+.tools button{font-size:14px;padding:9px 4px}
+#hintBox{position:fixed;z-index:3;left:12px;right:12px;top:calc(env(safe-area-inset-top,0px) + 56px);background:var(--panel);border:1px solid var(--gold);border-radius:12px;padding:12px 14px;font-size:14px;line-height:1.55;color:#f1e3c4}
+#win{position:fixed;z-index:4;left:50%;top:24%;transform:translateX(-50%);width:min(320px,calc(100vw - 32px));box-sizing:border-box;background:#213c2e;border:1px solid var(--ok);padding:20px;border-radius:16px;text-align:center}
+#win .big{font-size:24px;font-weight:700;margin-bottom:4px}
+#win .row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
+#demoBar{position:fixed;z-index:3;left:50%;top:calc(env(safe-area-inset-top,0px) + 58px);transform:translateX(-50%);background:#28303e;border:1px solid #6d86ad;padding:8px 10px 8px 14px;border-radius:12px;font-size:13px;white-space:nowrap;display:flex;gap:10px;align-items:center}
+#demoBar button{padding:6px 10px;font-size:13px}
+#menu{position:fixed;inset:0;z-index:5;overflow:auto;background:var(--bg);padding:calc(env(safe-area-inset-top,0px) + 28px) calc(env(safe-area-inset-right,0px) + 16px) calc(env(safe-area-inset-bottom,0px) + 24px) calc(env(safe-area-inset-left,0px) + 16px)}
+#menu .inner{max-width:440px;margin:0 auto;display:grid;gap:14px}
+.tag{font-size:11px;color:var(--gold);letter-spacing:1px}
+#menu h2{font-size:28px;margin:0}
+#menu p{margin:0;color:var(--muted);font-size:14px;line-height:1.6}
+#levels{display:grid;gap:8px}
+.lv{display:grid;grid-template-columns:40px 1fr auto;align-items:center;gap:10px;text-align:left;padding:14px;border-radius:14px}
+.lv .no{font-size:22px;font-weight:700;color:var(--gold);text-align:center}
+.lv .nm{font-size:17px;font-weight:600;display:grid}
+.lv small{font-size:12px;color:var(--muted);font-weight:400}
+.lv .bt{font-size:13px;color:var(--ok);font-variant-numeric:tabular-nums}
+.how{background:#1d222b;border:1px solid var(--line);border-radius:14px;padding:12px 14px;font-size:13.5px;line-height:1.6;color:#c4ccd8}
+.how b{color:var(--ink)}
+.how ul{margin:6px 0 0;padding-left:18px}
+#loading{position:fixed;z-index:9;inset:0;display:grid;place-items:center;background:var(--bg);color:#b8c6da;padding:24px;text-align:center}
+</style>
+</head>
+<body>
+<div id="loading">철사 퍼즐을 준비하고 있습니다…</div>
+<div id="stage"></div>
+
+<section id="menu" hidden>
+  <div class="inner">
+    <div class="tag">WIRE PUZZLE</div>
+    <h2>철사 퍼즐</h2>
+    <p>금색 철사에 걸린 은색 조각을 빼내세요. 철사는 통과할 수 없으니, 밀고 돌리면서 빠져나갈 길을 찾아야 합니다.</p>
+    <div id="levels"></div>
+    <div class="how"><b>조작 방법</b>
+      <ul>
+        <li><b>이동</b>: 한 손가락으로 끌기, 두 손가락 벌리기·모으기로 앞뒤</li>
+        <li><b>회전</b>: 한 손가락으로 굴리기, 두 손가락 비틀기</li>
+        <li><b>시점</b>: 한 손가락으로 돌려 보기, 두 손가락으로 확대</li>
+        <li>조각이 붉어지면 철사에 걸린 것입니다. 방향을 바꿔 보세요.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="game" hidden>
+  <div class="top">
+    <button id="back" aria-label="단계 목록">☰</button>
+    <h1 id="title"></h1>
+    <span id="timer">0.0초</span>
+  </div>
+  <div id="hintBox" hidden></div>
+  <div id="demoBar" hidden>정답 동작 재생 중 <button id="demoStop">직접 풀기</button></div>
+  <div class="bottom">
+    <div id="status" role="status"></div>
+    <div class="modes" role="group" aria-label="조작 모드">
+      <button data-mode="move" aria-pressed="true">✋ 이동</button>
+      <button data-mode="rotate" aria-pressed="false">⟳ 회전</button>
+      <button data-mode="view" aria-pressed="false">◉ 시점</button>
+    </div>
+    <div class="tools">
+      <button id="reset">↺ 처음부터</button>
+      <button id="hint">💡 힌트</button>
+      <button id="demo">정답 보기</button>
+    </div>
+  </div>
+</section>
+
+<div id="win" hidden><div class="big">풀었습니다!</div><div id="wintime"></div>
+  <div class="row"><button id="again">다시 하기</button><button id="next">다음 단계 →</button></div></div>
+
+<script>
+/*__BUNDLE__*/
+</script>
+<script type="text/plain" id="third-party-notices">
+Bundled: three.js r160 (MIT License, Copyright 2010-2023 three.js authors)
+         Rapier 3D compat 0.12.0 (Apache License 2.0, Copyright 2020 Dimforge EURL)
+Full license texts: https://github.com/mrdoob/three.js/blob/r160/LICENSE
+                    https://github.com/dimforge/rapier.js/blob/master/LICENSE
+</script>
+</body>
+</html>
